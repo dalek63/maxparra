@@ -77,11 +77,22 @@ def afficherNoms(dico):
         for j in range (len(dico.get(i))):
             print(dico.get(i).get(j).name)
 
-
+'''
 def compatible(t1,t2):
     for i in range (len(t1.writes)):
         for j in range (len(t2.reads)):
             if t1.writes[i]==t2.reads[j]:
+               return False
+        for j in range (len(t2.writes)):
+            if t1.writes[i]==t2.writes[j]:
+               return False
+    return True
+'''
+
+def compatible(t1,t2):
+    for i in range (len(t2.writes)):
+        for j in range (len(t1.reads)):
+            if t2.writes[i]==t1.reads[j]:
                return False
         for j in range (len(t2.writes)):
             if t1.writes[i]==t2.writes[j]:
@@ -102,28 +113,19 @@ def compatibleUltime(dico):
         addElement(incompatibles, compatibletotal(dico.get(i),dico))
     return incompatibles    
 
+def afficheprecedences(dico):
+    print("Voici les précédences de chaque taches par leur nom")
+    for i in range (len(list_obj)):
+        print(list_obj.get(i).name, " : " )
+        if len(dico.get(i))==0:
+            print("Aucune précédence")
+        for j in range (len(dico.get(i))):
+                print(dico.get(i).get(j).name)
 
-afficherNoms((compatibleUltime(list_obj)))
+afficheprecedences(compatibleUltime(list_obj))
+
+#afficherNoms((compatibleUltime(list_obj)))
 
 #print(compatible(prout,caca))              
                 
 #afficher(list_obj)
-
-'''
-
-
-
-        
-
-
-for i, j in list_obj.items():
-    print(i)
-    for key in j:
-        print
-
-
-'''
-
-
-#def ajouterV2(t):
-#  list_obj.append(t)
