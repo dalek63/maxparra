@@ -1,3 +1,4 @@
+from tkinter import *
 
 class Task:
     def __init__(self, name, writes, reads, run):
@@ -9,6 +10,12 @@ class Task:
 
 def addElement(dictionnaire, element):
     dictionnaire[len(dictionnaire)] = element
+
+def getKey(dico,val):
+    for i in range(len(dico)):
+        if dico.get(i)==val:
+            return i
+
 
 list_obj = {}
 
@@ -44,23 +51,23 @@ def ajouter(dic):
 #ajouter(list_obj)
 
 
-prout = Task(name = "prout",writes = [7],reads = [1,2],run = None)
-caca = Task(name = "caca",writes = [8],reads = [3,4],run = None)
-remi  = Task(name = "remi",writes = [9],reads = [5,6],run = None)
-setha = Task(name = "setha",writes = [10],reads = [7,8],run = None)
-gianny = Task(name = "gianny",writes = [11],reads = [7,8],run = None)
-zach = Task(name = "zach",writes = [12],reads = [11,9],run = None)
-younes = Task(name = "younes",writes = [13],reads = [12],run = None)
-gringo = Task(name = "gringo",writes = [14],reads = [10,13],run = None)
+T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
+T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
+T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
+T4 = Task(name = "T4",writes = [5],reads = [3,4],run = None)
+T5 = Task(name = "T5",writes = [2],reads = [4],run = None)
+T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
+T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
+T8 = Task(name = "T8",writes = [5],reads = [1,3],run = None)
 
-list_obj[len(list_obj)] = prout
-list_obj[len(list_obj)] = caca
-list_obj[len(list_obj)] = remi
-list_obj[len(list_obj)] = setha
-list_obj[len(list_obj)] = gianny
-list_obj[len(list_obj)] = zach
-list_obj[len(list_obj)] = younes
-list_obj[len(list_obj)] = gringo
+list_obj[len(list_obj)] = T1
+list_obj[len(list_obj)] = T2
+list_obj[len(list_obj)] = T3
+list_obj[len(list_obj)] = T4
+list_obj[len(list_obj)] = T5
+list_obj[len(list_obj)] = T6
+list_obj[len(list_obj)] = T7
+list_obj[len(list_obj)] = T8
 
 
 
@@ -89,7 +96,13 @@ def compatible(t1,t2):
     return True
 '''
 
+#Compatibilité inversée
+
 def compatible(t1,t2):
+    for i in range (len(t1.writes)):
+        for j in range (len(t2.reads)):
+            if t1.writes[i]==t2.reads[j]:
+                return False
     for i in range (len(t2.writes)):
         for j in range (len(t1.reads)):
             if t2.writes[i]==t1.reads[j]:
@@ -98,12 +111,13 @@ def compatible(t1,t2):
             if t1.writes[i]==t2.writes[j]:
                return False
     return True
+   
 
 def compatibletotal(t,dico):
     incompatibles = {}                                          
-    for i in range(len(dico)):
-        if compatible(t, dico.get(i))==False and dico.get(i)!=t:
-                addElement(incompatibles,dico.get(i))
+    for i in range(getKey(dico,t),len(dico)):
+                if compatible(t, dico.get(i))==False and dico.get(i)!=t :
+                        addElement(incompatibles,dico.get(i))
     return incompatibles
 
 
@@ -123,6 +137,25 @@ def afficheprecedences(dico):
                 print(dico.get(i).get(j).name)
 
 afficheprecedences(compatibleUltime(list_obj))
+
+
+
+
+'''
+def redondances(dico):
+    for i in range(len(list_obj)):
+        if(len(dico.get(i)==0)):
+            i=i+1
+        for j in range(len(dico.get(i))):
+            while len(dico.get(i).get(j)
+            for(k in range())
+'''
+
+        
+
+
+
+
 
 #afficherNoms((compatibleUltime(list_obj)))
 
