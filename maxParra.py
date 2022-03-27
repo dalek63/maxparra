@@ -1,4 +1,3 @@
-from tkinter import *
 
 class Task:
     def __init__(self, name, writes, reads, run):
@@ -6,7 +5,31 @@ class Task:
         self.writes = writes
         self.reads = reads
         self.run = None
+    
+    def dessiner(self, x, y, radius, fenetre):
+        pt = Point(x, y)
+        ptText = Point(x, y)
+        
+        cir = Circle(pt, radius)
+        cir.setFill(color_rgb(100, 255, 50))
+        cir.draw(fenetre)
 
+        txt = Text(ptText, self.name)
+        txt.setTextColor(color_rgb(0, 0, 0))
+        txt.setSize(15)
+        txt.draw(fenetre)
+
+
+'''
+
+ for i in range (len (t1.writes)):
+        for j in range (len (t2.reads)):
+            if t2.reads[j] == t1.writes[i] and t1.reads[i] == t2.reads[j]:
+                return True
+            for k in range (len (t2.writes)):
+                if t1.writes[i] == t2.writes[k] and t1.reads[i] == t2.reads[j]:
+                    return True
+'''        
 
 def addElement(dictionnaire, element):
     dictionnaire[len(dictionnaire)] = element
@@ -70,6 +93,8 @@ list_obj[len(list_obj)] = T7
 list_obj[len(list_obj)] = T8
 
 
+    
+    
 
 def afficher(dico): 
     for i in range (len(dico)):
@@ -99,6 +124,9 @@ def compatible(t1,t2):
 #Compatibilité inversée
 
 def compatible(t1,t2):
+   
+
+                
     for i in range (len(t1.writes)):
         for j in range (len(t2.reads)):
             if t1.writes[i]==t2.reads[j]:
@@ -139,24 +167,41 @@ def afficheprecedences(dico):
 afficheprecedences(compatibleUltime(list_obj))
 
 
+def allDrawing(listeTache):
+        win = GraphWin("My Window", 800, 800)
+        win.setBackground(color_rgb(255, 255, 0))
 
+        x = 0
+        y = 0
+        for i in range(len(listeTache)):
+            x += 200
+            y += 200
+            listeTache[i].dessiner(x, y, 50, win)
+        win.getMouse()
+        win.close()
+'''
+
+def redondances(t,dico):
+    mem=t
+    t=dico.get(getKey(list_obj, t)).get(0)
+    r={}
+    i=0
+    while len(dico.get(getKey(list_obj, t)))!=0:
+        for j in range (len(dico.get(getKey(list_obj, t)))):
+            if dico.get(j)==mem:
+                addElement(r, t)
+        t=dico.get(getKey(list_obj, t)).get(i)
+        i=i+1
+        print(t.name)
+    return r
+
+
+print(redondances(T4,compatibleUltime(list_obj)))
+
+def rendondances2(t,dico):
+    for i in range (len(compatibleUltime(list_obj)))
 
 '''
-def redondances(dico):
-    for i in range(len(list_obj)):
-        if(len(dico.get(i)==0)):
-            i=i+1
-        for j in range(len(dico.get(i))):
-            while len(dico.get(i).get(j)
-            for(k in range())
-'''
-
-        
-
-
-
-
-
 #afficherNoms((compatibleUltime(list_obj)))
 
 #print(compatible(prout,caca))              
