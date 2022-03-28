@@ -16,22 +16,24 @@ def getKey(dico,val):                                   # Retourne la clé de la
         if dico.get(i)==val:
             return i
 
+def verifname(nom):                                     #Verifie si une tâche a déjà ce nom
+    for i in range(len(list_obj)):
+        if list_obj.get(i).name==nom:
+            print("Ce nom de tâche est déjà utilisé, choisissez en un autre")
+            return False
+
 
 #list_obj est le dictionnaire qui contient toutes les tâches 
 
 list_obj = {}
 
-def ajouter(dic):                                       # Permet de creer une tache et de l'ajouter au dictionnaire des tâches 
+def ajouter():                                       # Permet de creer une tache et de l'ajouter au dictionnaire des tâches 
     
     print('Entrez nom')
     nom=input()
-    if len(list_obj)!=0:
-        for l in range(len(list_obj)):
-         if list_obj.get(l).name==nom:
-             print("Ce nom de tâche est déjà utilisé, choisissez en un autre")
-             break 
-    
-
+    while verifname(nom)==False:
+        nom=input()
+    name=nom
     print('Entrez le nombre de valeur ecrites')
     a=input()
     n=int(a)
@@ -48,15 +50,20 @@ def ajouter(dic):                                       # Permet de creer une ta
         print('Entrez valeur lue')
         x=input()
         reads.append(x)
-    '''
-    print('Entrez le nom de run')
-    run=input()
-    '''
-    self = Task(name, writes, reads, None)
+    activer = "NON"
+        #Cette fonction
+    activer == "NON" 
+    def run():
+        if activer=="OUI":
+            print("La tâche " + name + " a été lancée")
+
+    self = Task(name, writes, reads, run())
+
+    activer == "OUI"
     addElement(list_obj, self)
     
-
-
+ajouter()
+list_obj.get(0).run
 def ajouterTaches():                            # Permet d'ajouter le nombre voulu de taches
     print("Entrez le nombre de tâches")
     n=input()
@@ -158,7 +165,7 @@ def redondances(dico):
     return dico
 
 
-maxparra = redondances(compatibleUltime(list_obj))
+#maxparra = redondances(compatibleUltime(list_obj))
 
-afficheprecedences(maxparra)    
+#afficheprecedences(maxparra)    
                 
