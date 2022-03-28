@@ -6,47 +6,31 @@ class Task:
         self.writes = writes
         self.reads = reads
         self.run = None
-    
-    def dessiner(self, x, y, radius, fenetre):
-        pt = Point(x, y)
-        ptText = Point(x, y)
-        
-        cir = Circle(pt, radius)
-        cir.setFill(color_rgb(100, 255, 50))
-        cir.draw(fenetre)
-
-        txt = Text(ptText, self.name)
-        txt.setTextColor(color_rgb(0, 0, 0))
-        txt.setSize(15)
-        txt.draw(fenetre)
 
 
-'''
-
- for i in range (len (t1.writes)):
-        for j in range (len (t2.reads)):
-            if t2.reads[j] == t1.writes[i] and t1.reads[i] == t2.reads[j]:
-                return True
-            for k in range (len (t2.writes)):
-                if t1.writes[i] == t2.writes[k] and t1.reads[i] == t2.reads[j]:
-                    return True
-'''        
-
-def addElement(dictionnaire, element):
+def addElement(dictionnaire, element):                  # Ajouter un element à la fin du dico
     dictionnaire[len(dictionnaire)] = element
 
-def getKey(dico,val):
+def getKey(dico,val):                                   # Retourne la clé de la valeur passé en parametre
     for i in range(len(dico)):
         if dico.get(i)==val:
             return i
 
 
+#list_obj est le dictionnaire qui contient toutes les tâches 
+
 list_obj = {}
 
-def ajouter(dic):
+def ajouter(dic):                                       # Permet de creer une tache et de l'ajouter au dictionnaire des tâches 
     
     print('Entrez nom')
-    name=input()
+    nom=input()
+    if len(list_obj)!=0:
+        for l in range(len(list_obj)):
+         if list_obj.get(l).name==nom:
+             print("Ce nom de tâche est déjà utilisé, choisissez en un autre")
+             break 
+    
 
     print('Entrez le nombre de valeur ecrites')
     a=input()
@@ -71,9 +55,17 @@ def ajouter(dic):
     self = Task(name, writes, reads, None)
     addElement(list_obj, self)
     
-    
-#ajouter(list_obj)
 
+
+def ajouterTaches():                            # Permet d'ajouter le nombre voulu de taches
+    print("Entrez le nombre de tâches")
+    n=input()
+    for i in range (n):
+        ajouter()
+
+    
+
+# Des exemples qui nous ont permis de tester plus rapidement le programme
 
 T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
 T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
@@ -84,6 +76,9 @@ T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
 T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
 T8 = Task(name = "T8",writes = [5],reads = [1,3],run = None)
 
+
+
+# Permet de rajouter une tache après l'autre au fur et à mesur
 list_obj[len(list_obj)] = T1
 list_obj[len(list_obj)] = T2
 list_obj[len(list_obj)] = T3
@@ -94,9 +89,7 @@ list_obj[len(list_obj)] = T7
 list_obj[len(list_obj)] = T8
 
 
-    
-    
-
+# Les 2 fonctions suivantes nous ont servi à tester l'affichage des Ecriture/Lecteurs de notre dictionnaire
 def afficher(dico): 
     for i in range (len(dico)):
         for j in range (len(dico.get(i).writes)):
@@ -104,33 +97,11 @@ def afficher(dico):
         for j in range (len(dico.get(i).reads)):
             print(dico.get(i).reads[j])
 
-def afficherNoms(dico): 
-    for i in range (len(dico)):
-        print(i , " : ")
-        for j in range (len(dico.get(i))):
-            print(dico.get(i).get(j).name)
 
-'''
+
+    # Cette methode permet de verifier les conditions de Bernstein, elle retourne faux si une condition est violée et vrai sinon
 def compatible(t1,t2):
     for i in range (len(t1.writes)):
-        for k in range (len(t2.reads)):
-            for j in range (len(t2.reads)):
-                if t1.writes[i]==t2.reads[j] or t2.reads[k] = t1.reads[i]:
-               return False
-        for j in range (len(t2.writes)):
-            if t1.writes[i]==t2.writes[j]:
-               return False
-    return True
-'''
-
-#Compatibilité inversée
-
-def compatible(t1,t2):
-   
-
-   
-    for i in range (len(t1.writes)):
-        
                 for j in range (len(t2.reads)):
                     if t1.writes[i]==t2.reads[j]   :
                         return False
@@ -144,6 +115,7 @@ def compatible(t1,t2):
     return True
    
 
+    #compatibleTotal sert à appliquer compatible entre 1 tache et tout le reste des taches
 def compatibletotal(t,dico):
     incompatibles = {}                                          
     for i in range(getKey(dico,t),len(dico)):
@@ -152,12 +124,15 @@ def compatibletotal(t,dico):
     return incompatibles
 
 
+    # compatibleUltime sert à appliquer compatibleTotal entre toutes les taches
 def compatibleUltime(dico):
     incompatibles = {}
     for i in range (len(dico)):
         addElement(incompatibles, compatibletotal(dico.get(i),dico))
     return incompatibles    
 
+
+    # afficherprecedeces sert à afficher les precedences de chaque tache du dictionnaire
 def afficheprecedences(dico):
     print("Voici les précédences de chaque taches par leur nom")
     for i in range (len(list_obj)):
@@ -169,6 +144,9 @@ def afficheprecedences(dico):
 
 
 #afficheprecedences(compatibleUltime(list_obj))
+
+
+# Cette fonction permet de supprimer les redondances des taches du dictionnaire
 
 def redondances(dico):
     for i in range (len(dico)):
@@ -182,45 +160,5 @@ def redondances(dico):
 
 maxparra = redondances(compatibleUltime(list_obj))
 
-afficheprecedences(maxparra)
-
-
-
-
-
-
-def allDrawing(listeTache):
-        win = GraphWin("My Window", 800, 800)
-        win.setBackground(color_rgb(255, 255, 0))
-        listCercle = []
-        x = 0
-        y = 0
-        """
-        for i in range(len(listeTache)):
-            if (not(listeTache[i].name in listCercle)):
-                x += 100
-                y += 100
-                listeTache[i].dessiner(x, y, 50, win)
-                listCercle.append[listeTache[i].name]
-        """
-
-        x = 0
-        y = 0
-        for i in range(len(listeTache)):
-            x += 100
-            y += 100
-            listeTache[i].dessiner(x, y, 50, win)
-            
-        win.getMouse()
-        win.close()
-
-
-#allDrawing(list_obj)
-
-
-
-#afficherNoms((compatibleUltime(list_obj)))
-
-#print(compatible(prout,caca))              
+afficheprecedences(maxparra)    
                 
-#afficher(list_obj)
