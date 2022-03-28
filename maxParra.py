@@ -167,26 +167,27 @@ def afficheprecedences(dico):
         for j in range (len(dico.get(i))):
                 print(dico.get(i).get(j).name)
 
-#afficheprecedences(compatibleUltime(list_obj))
 
+#afficheprecedences(compatibleUltime(list_obj))
 
 def redondances(dico):
     for i in range (len(dico)):
         for j in range(len(dico.get(i))):
             for k in range(i+1,len(dico)):
                 for l in range (len(dico.get(k))):
-                    if dico.get(i).get(j)==dico.get(k).get(l) and dico.get(i).__contains__(list_obj.get(k)) :
+                    if dico.get(i).get(j)==dico.get(k).get(l) and (list_obj.get(k)) in dico.get(i).values():
                         dico.get(i).pop(getKey(dico.get(i),dico.get(k).get(l)))
     return dico
 
-afficheprecedences(redondances(compatibleUltime(list_obj)))
 
-'''
-def rendondance(d1,d2):
-    for i in range (len(d1)):
-        for j in range (len(d2)):
-            if d1.get(i)==dico.get(j) and d1.
-'''
+maxparra = redondances(compatibleUltime(list_obj))
+
+afficheprecedences(maxparra)
+
+
+
+
+
 
 def allDrawing(listeTache):
         win = GraphWin("My Window", 800, 800)
@@ -217,29 +218,7 @@ def allDrawing(listeTache):
 #allDrawing(list_obj)
 
 
-'''
 
-def redondances(t,dico):
-    mem=t
-    t=dico.get(getKey(list_obj, t)).get(0)
-    r={}
-    i=0
-    while len(dico.get(getKey(list_obj, t)))!=0:
-        for j in range (len(dico.get(getKey(list_obj, t)))):
-            if dico.get(j)==mem:
-                addElement(r, t)
-        t=dico.get(getKey(list_obj, t)).get(i)
-        i=i+1
-        print(t.name)
-    return r
-
-
-print(redondances(T4,compatibleUltime(list_obj)))
-
-def rendondances2(t,dico):
-    for i in range (len(compatibleUltime(list_obj)))
-
-'''
 #afficherNoms((compatibleUltime(list_obj)))
 
 #print(compatible(prout,caca))              
