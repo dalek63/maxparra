@@ -1,3 +1,4 @@
+from graphics import *
 
 class Task:
     def __init__(self, name, writes, reads, run):
@@ -112,8 +113,9 @@ def afficherNoms(dico):
 '''
 def compatible(t1,t2):
     for i in range (len(t1.writes)):
-        for j in range (len(t2.reads)):
-            if t1.writes[i]==t2.reads[j]:
+        for k in range (len(t2.reads)):
+            for j in range (len(t2.reads)):
+                if t1.writes[i]==t2.reads[j] or t2.reads[k] = t1.reads[i]:
                return False
         for j in range (len(t2.writes)):
             if t1.writes[i]==t2.writes[j]:
@@ -126,11 +128,12 @@ def compatible(t1,t2):
 def compatible(t1,t2):
    
 
-                
+   
     for i in range (len(t1.writes)):
-        for j in range (len(t2.reads)):
-            if t1.writes[i]==t2.reads[j]:
-                return False
+        
+                for j in range (len(t2.reads)):
+                    if t1.writes[i]==t2.reads[j]   :
+                        return False
     for i in range (len(t2.writes)):
         for j in range (len(t1.reads)):
             if t2.writes[i]==t1.reads[j]:
@@ -164,21 +167,56 @@ def afficheprecedences(dico):
         for j in range (len(dico.get(i))):
                 print(dico.get(i).get(j).name)
 
-afficheprecedences(compatibleUltime(list_obj))
+#afficheprecedences(compatibleUltime(list_obj))
 
+
+def redondances(dico):
+    for i in range (len(dico)):
+        for j in range(len(dico.get(i))):
+            for k in range(i+1,len(dico)):
+                for l in range (len(dico.get(k))):
+                    if dico.get(i).get(j)==dico.get(k).get(l) and dico.get(i).__contains__(list_obj.get(k)) :
+                        dico.get(i).pop(getKey(dico.get(i),dico.get(k).get(l)))
+    return dico
+
+afficheprecedences(redondances(compatibleUltime(list_obj)))
+
+'''
+def rendondance(d1,d2):
+    for i in range (len(d1)):
+        for j in range (len(d2)):
+            if d1.get(i)==dico.get(j) and d1.
+'''
 
 def allDrawing(listeTache):
         win = GraphWin("My Window", 800, 800)
         win.setBackground(color_rgb(255, 255, 0))
+        listCercle = []
+        x = 0
+        y = 0
+        """
+        for i in range(len(listeTache)):
+            if (not(listeTache[i].name in listCercle)):
+                x += 100
+                y += 100
+                listeTache[i].dessiner(x, y, 50, win)
+                listCercle.append[listeTache[i].name]
+        """
 
         x = 0
         y = 0
         for i in range(len(listeTache)):
-            x += 200
-            y += 200
+            x += 100
+            y += 100
             listeTache[i].dessiner(x, y, 50, win)
+            
         win.getMouse()
         win.close()
+
+
+#allDrawing(list_obj)
+
+
 '''
 
 def redondances(t,dico):
