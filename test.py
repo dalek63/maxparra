@@ -32,9 +32,12 @@ tSomme.reads = ["X", "Y"]
 tSomme.writes = ["Z"]
 tSomme.run = runTsomme
 
-t1.run()
-t2.run()
+t1.run(),t2.run()
+
 tSomme.run()
 print(X)
 print(Y)
 print(Z)
+
+
+ 

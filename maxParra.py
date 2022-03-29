@@ -50,11 +50,6 @@ def ajouter():                                       # Permet de creer une tache
         print('Entrez valeur lue')
         x=input()
         reads.append(x)
-  
-        #Cette fonction
-    
-    
-            
 
     self = Task(name, writes, reads, None)
 
@@ -62,8 +57,8 @@ def ajouter():                                       # Permet de creer une tache
 
     addElement(list_obj, self)
     
-ajouter()
-list_obj.get(0).run
+#ajouter()
+#list_obj.get(0).run
 
 def ajouterTaches():                            # Permet d'ajouter le nombre voulu de taches
     print("Entrez le nombre de tâches")
@@ -177,11 +172,61 @@ def recherche(t,dico):
                     return True
     return False
 
+def aucunePrecedence(dico):
+    for i in range (len(dico)):
+        for j in range(len(list_obj)):
+            if dico.get(i)==list_obj.get(j) and len(maxparra.get(j))!=0: 
+                return False
+    return True
+
 def initrun(dico):
+    ordre = {}
     for i in range(len(dico)):
         if recherche(list_obj.get(i), dico)==False:
-            list_obj.get(i).run()
+            addElement(ordre, list_obj.get(i))
+            
+    tempdic = ordre
+    tempdic2 = {}
     
-    
+    while aucunePrecedence(tempdic)==False:
+        for k in range(len(tempdic)):
+            for i in range (len(dico)):
+                for j in range (len(dico.get(i))):
+                    if list_obj.get(i)==tempdic.get(k)and dico.get(i).get(j) not in tempdic2.values():
+                     addElement(tempdic2, dico.get(i).get(j))
 
+                        
+        for l in range(len(tempdic2)):
+            addElement(ordre, tempdic2.get(l))
+
+        
+
+        tempdic=tempdic2
+
+        print("!")
+        for l in range(len(tempdic)):
+            print(tempdic.get(l).name)
+        print("!")
+        
+        tempdic2.clear()
+
+        
+        print(aucunePrecedence(tempdic))
+    return ordre       
+
+
+def afficheordre(dico):
+    for i in range(len(dico)):
+        print(dico.get(i).name)
+
+afficheordre(initrun(maxparra))
+
+
+    
+t= {}   
+t[len(t)] = T3
+t[len(t)] = T4
+t[len(t)] = T5
    
+
+#print(aucunePrecedence(t))
