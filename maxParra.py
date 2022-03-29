@@ -50,20 +50,21 @@ def ajouter():                                       # Permet de creer une tache
         print('Entrez valeur lue')
         x=input()
         reads.append(x)
-    activer = "NON"
+  
         #Cette fonction
-    activer == "NON" 
-    def run():
-        if activer=="OUI":
-            print("La tâche " + name + " a été lancée")
+    
+    
+            
 
-    self = Task(name, writes, reads, run())
+    self = Task(name, writes, reads, None)
 
-    activer == "OUI"
+    self.run=print("La tâche " + name + " a été lancée")
+
     addElement(list_obj, self)
     
 ajouter()
 list_obj.get(0).run
+
 def ajouterTaches():                            # Permet d'ajouter le nombre voulu de taches
     print("Entrez le nombre de tâches")
     n=input()
@@ -165,7 +166,22 @@ def redondances(dico):
     return dico
 
 
-#maxparra = redondances(compatibleUltime(list_obj))
+maxparra = redondances(compatibleUltime(list_obj))
 
-#afficheprecedences(maxparra)    
-                
+#afficheprecedences(maxparra)   
+
+def recherche(t,dico);
+    for i in range(len(dico)):
+        for j in range(len(dico)):
+                if t in dico.get(j).values():
+                    return True
+    return False
+
+def initrun(dico):
+    for i in range(len(dico)):
+        if recherche(list_obj.get(i), dico)==False:
+            list_obj.get(i).run()
+    
+    
+
+   
