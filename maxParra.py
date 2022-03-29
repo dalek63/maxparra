@@ -170,7 +170,7 @@ maxparra = redondances(compatibleUltime(list_obj))
 
 #afficheprecedences(maxparra)   
 
-def recherche(t,dico);
+def recherche(t,dico):
     for i in range(len(dico)):
         for j in range(len(dico)):
                 if t in dico.get(j).values():
