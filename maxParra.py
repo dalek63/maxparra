@@ -1,4 +1,5 @@
-from graphics import *
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class Task:
     def __init__(self, name, writes, reads, run):
@@ -104,7 +105,7 @@ def afficher(dico):
 
 
 
-    # Cette methode permet de verifier les conditions de Bernstein, elle retourne faux si une condition est violée et vrai sinon
+# Cette methode permet de verifier les conditions de Bernstein, elle retourne faux si une condition est violée et vrai sinon
 def compatible(t1,t2):
     for i in range (len(t1.writes)):
                 for j in range (len(t2.reads)):
@@ -120,7 +121,7 @@ def compatible(t1,t2):
     return True
    
 
-    #compatibleTotal sert à appliquer compatible entre 1 tache et tout le reste des taches
+#compatibleTotal sert à appliquer compatible entre 1 tache et tout le reste des taches
 def compatibletotal(t,dico):
     incompatibles = {}                                          
     for i in range(getKey(dico,t),len(dico)):
@@ -129,7 +130,7 @@ def compatibletotal(t,dico):
     return incompatibles
 
 
-    # compatibleUltime sert à appliquer compatibleTotal entre toutes les taches
+# compatibleUltime sert à appliquer compatibleTotal entre toutes les taches
 def compatibleUltime(dico):
     incompatibles = {}
     for i in range (len(dico)):
@@ -138,17 +139,15 @@ def compatibleUltime(dico):
 
 
     # afficherprecedeces sert à afficher les precedences de chaque tache du dictionnaire
-def afficheprecedences(dico):
-    print("Voici les précédences de chaque taches par leur nom")
+def afficheDependances(dico):
+    print("Voici les dépendances de chaque tache : ")
+    print("")
     for i in range (len(list_obj)):
         print(list_obj.get(i).name, " : " )
         if len(dico.get(i))==0:
-            print("Aucune précédence")
+            print("Aucune dépendance")
         for j in range (len(dico.get(i))):
                 print(dico.get(i).get(j).name)
-
-
-#afficheprecedences(compatibleUltime(list_obj))
 
 
 # Cette fonction permet de supprimer les redondances des taches du dictionnaire
@@ -163,10 +162,12 @@ def redondances(dico):
     return dico
 
 
+
 maxparra = redondances(compatibleUltime(list_obj))
 
 #afficheprecedences(maxparra)   
 
+    # Cette fonction renvoie True si la tache mis en parametres une tache n'est jamais une précedence et false sinon
 def recherche(t,dico):
     for i in range(len(dico)):
         for j in range(len(dico)):
@@ -174,6 +175,7 @@ def recherche(t,dico):
                     return True
     return False
 
+    # Cette fonction applique la fonction recherche dans le dictionnaire de tache
 def aucunePrecedence(dico):
     for i in range (len(dico)):
         for j in range(len(list_obj)):
@@ -181,8 +183,11 @@ def aucunePrecedence(dico):
                 return False
     return True
 
+    # Cette fonction donne l'ordre dans lequel les taches doivent s'éxecuter
 def initrun(dico):
     ordre = {}
+
+    # Ici on cherche les taches qui n'ont pas de précedences et qui s'effectuent donc en premier 
     for i in range(len(dico)):
         if recherche(list_obj.get(i), dico)==False:
             addElement(ordre, list_obj.get(i))
@@ -190,18 +195,16 @@ def initrun(dico):
     tempdic = ordre
     tempdic2 = {}
     
+    # Tant qu'au moins 1 tache qu'on étudie possède au moins 1 précedence
     while aucunePrecedence(tempdic)==False:
         for k in range(len(tempdic)):
             for i in range (len(dico)):
                 for j in range (len(dico.get(i))):
                     if list_obj.get(i)==tempdic.get(k)and dico.get(i).get(j) not in tempdic2.values():
                      addElement(tempdic2, dico.get(i).get(j))
-
-                        
+           
         for l in range(len(tempdic2)):
             addElement(ordre, tempdic2.get(l))
-
-        
 
         tempdic=tempdic2
          
@@ -212,43 +215,52 @@ def initrun(dico):
             print(tempdic.get(l).name)
         print("!")
         '''
-
-
         tempdic2 = {}
 
        
     return ordre       
 
-
+    # Cette fonction permet d'afficher l'ordre des taches
 def afficheordre(dico):
     for i in range(len(dico)):
         print(dico.get(i).name)
 
-
-
+    # Cette fonction permet d'executer le run de chaque tache en respectant l'ordre trouvé juste avant
 def afficherRun(dico): 
     for i in range (len(dico)):
-        dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée gringo")
+        dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée ")
         
+
+
+#affichedependancesdences(compatibleUltime(list_obj))
+'''
+print("")
+print("Lancement des tâches en paralélisation maximale: ")
+print("")
 afficherRun(initrun(maxparra))
 
 
-def executeOrder66(dico):
-    for i in range(len(dico)):
-        dico.get(i).run
+'''
 
 
-#executeOrder66(initrun(maxparra))
 #afficheordre(initrun(maxparra))
 
-
-
-#Exemple test
-
-t= {}   
-t[len(t)] = T3
-t[len(t)] = T4
-t[len(t)] = T5
-   
-
 #print(aucunePrecedence(t))
+
+
+
+#***************************************************Partie Graphique***********************************************************
+
+G = nx.DiGraph()
+
+G.add_edges_from([ ('A', 'B'), ('A', 'C'), ('C', 'B')])
+pos = nx.spring_layout(G)
+nx.draw_networkx_nodes(G, pos, node_size=500)
+nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color='black')
+nx.draw_networkx_labels(G, pos)
+plt.show()
+
+def draw():
+    for i in range(len(maxparra)):
+        for j in range(len(maxparra.get(i))):
+            G.add_edges_from((list_obj.get(i).name, maxparra.get(i).get(j).name))
