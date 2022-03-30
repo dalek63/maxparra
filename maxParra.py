@@ -232,7 +232,7 @@ def afficherRun(dico):
         
 
 
-#affichedependancesdences(compatibleUltime(list_obj))
+afficheDependances(maxparra)
 '''
 print("")
 print("Lancement des tâches en paralélisation maximale: ")
@@ -251,16 +251,24 @@ afficherRun(initrun(maxparra))
 
 #***************************************************Partie Graphique***********************************************************
 
-G = nx.DiGraph()
 
-G.add_edges_from([ ('A', 'B'), ('A', 'C'), ('C', 'B')])
-pos = nx.spring_layout(G)
-nx.draw_networkx_nodes(G, pos, node_size=500)
-nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color='black')
-nx.draw_networkx_labels(G, pos)
-plt.show()
+
+
+
 
 def draw():
+    G = nx.DiGraph()
+    arretes = []
     for i in range(len(maxparra)):
         for j in range(len(maxparra.get(i))):
-            G.add_edges_from((list_obj.get(i).name, maxparra.get(i).get(j).name))
+            arretes.append((list_obj.get(i).name, maxparra.get(i).get(j).name))
+
+    G.add_edges_from(arretes)
+    pos = nx.spring_layout(G)
+    nx.draw_networkx_nodes(G, pos, node_size=500)
+    nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color='black')
+    nx.draw_networkx_labels(G, pos)
+    plt.show()
+
+
+draw()
