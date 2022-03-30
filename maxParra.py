@@ -229,32 +229,13 @@ def afficheordre(dico):
 def afficherRun(dico): 
     for i in range (len(dico)):
         dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée ")
-        
-
-
-afficheDependances(maxparra)
-'''
-print("")
-print("Lancement des tâches en paralélisation maximale: ")
-print("")
-afficherRun(initrun(maxparra))
-
-
-'''
-
-
-#afficheordre(initrun(maxparra))
-
-#print(aucunePrecedence(t))
-
 
 
 #***************************************************Partie Graphique***********************************************************
 
 
-
-
-
+#Fonction qui dessine le graphe par rapport à la liste des dépendances creer par la fonction redondances(compatibleUltime(list_obj)) 
+# et grâce à deux modules importés : networkx et matplotlib
 
 def draw():
     G = nx.DiGraph()
@@ -269,6 +250,26 @@ def draw():
     nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color='black')
     nx.draw_networkx_labels(G, pos)
     plt.show()
+
+
+
+
+
+#afficheDependances(maxparra)
+'''
+print("")
+print("Lancement des tâches en paralélisation maximale: ")
+print("")
+afficherRun(initrun(maxparra))
+
+
+'''
+
+
+#afficheordre(initrun(maxparra))
+
+#print(aucunePrecedence(t))
+
 
 
 draw()
