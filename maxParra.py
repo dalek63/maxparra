@@ -70,14 +70,15 @@ def ajouterTaches():                            # Permet d'ajouter le nombre vou
 
 # Des exemples qui nous ont permis de tester plus rapidement le programme
 
-T1 = Task(name = "T1",writes = [3],reads = [1,2],run = print("La tâche T1 a été lancée"))
-T2 = Task(name = "T2",writes = [4],reads = [1],run = print("La tâche T2 a été lancée"))
-T3  = Task(name = "T3",writes = [1],reads = [3,4],run = print("La tâche T3 a été lancée"))
-T4 = Task(name = "T4",writes = [5],reads = [3,4],run = print("La tâche T4 a été lancée"))
-T5 = Task(name = "T5",writes = [2],reads = [4],run = print("La tâche T5 a été lancée"))
-T6 = Task(name = "T6",writes = [5],reads = [5],run = print("La tâche T6 a été lancée"))
-T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = print("La tâche T7 a été lancée"))
-T8 = Task(name = "T8",writes = [5],reads = [1,3],run =print("La tâche T8 a été lancée"))
+T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
+T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
+T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
+T4 = Task(name = "T4",writes = [5],reads = [3,4],run = None)
+T5 = Task(name = "T5",writes = [2],reads = [4],run = None)
+T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
+T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
+T8 = Task(name = "T8",writes = [5],reads = [1,3],run =None)
+
 
 
 
@@ -90,6 +91,7 @@ list_obj[len(list_obj)] = T5
 list_obj[len(list_obj)] = T6
 list_obj[len(list_obj)] = T7
 list_obj[len(list_obj)] = T8
+
 
 
 # Les 2 fonctions suivantes nous ont servi à tester l'affichage des Ecriture/Lecteurs de notre dictionnaire
@@ -223,6 +225,14 @@ def afficheordre(dico):
         print(dico.get(i).name)
 
 
+
+def afficherRun(dico): 
+    for i in range (len(dico)):
+        dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée gringo")
+        
+afficherRun(initrun(maxparra))
+
+
 def executeOrder66(dico):
     for i in range(len(dico)):
         dico.get(i).run
@@ -233,6 +243,7 @@ def executeOrder66(dico):
 
 
 
+#Exemple test
 
 t= {}   
 t[len(t)] = T3
