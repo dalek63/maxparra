@@ -248,5 +248,5 @@ list_nul[len(list_nul)] = T80
 
 s1= TaskSystem(list_obj)
 s1.afficheDependances()
-#s1.afficherRun()
-#s1.draw()
+s1.afficherRun()
+s1.draw()
