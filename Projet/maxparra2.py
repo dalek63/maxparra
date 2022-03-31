@@ -14,7 +14,15 @@ class Task:
 class TaskSystem:
     def __init__(self, list_obj):
         self.list_obj = list_obj
-        
+
+
+    def samename(self):
+        for i in range(len(self.list_obj)):
+            for j in range(i+1,len(self.list_obj)):
+                if self.list_obj.get(i).name == self.list_obj.get(j).name :
+                    print("DEUX TACHES ONT LE MEME NOM , FIN DU PROGRAMME")
+                    return True
+        return False
       
     def addElement(self, dictionnaire, element):                  # Ajouter un element à la fin du dico
         dictionnaire[len(dictionnaire)] = element
@@ -23,59 +31,6 @@ class TaskSystem:
         for i in range(len(dico)):
             if dico.get(i)==val:
                 return i
-
-    def verifname(self, nom):                                     #Verifie si une tâche a déjà ce nom
-        for i in range(len(self.list_obj)):
-            if self.list_obj.get(i).name==nom:
-                print("Ce nom de tâche est déjà utilisé, choisissez en un autre")
-                return False
-
-
-    def ajouter(self):                                       # Permet de creer une tache et de l'ajouter au dictionnaire des tâches 
-        
-        print('Entrez nom')
-        nom=input()
-        while self.verifname(nom)==False:
-            nom=input()
-        name=nom
-        print('Entrez le nombre de valeur ecrites')
-        a=input()
-        n=int(a)
-        writes = []
-        for i in range(n):
-            print('Entrez valeur ecrite')
-            x=input()
-            writes.append(x)
-                
-        print('Entrez le nombre de valeur lues')
-        n=int(input())
-        reads = []
-        for i in range(n):
-            print('Entrez valeur lue')
-            x=input()
-            reads.append(x)
-
-        self.addElement(self.list_obj, Task(name, writes, reads, None))
-        
-    #ajouter()
-    #list_obj.get(0).run
-
-    def ajouterTaches(self):                            # Permet d'ajouter le nombre voulu de taches
-        print("Entrez le nombre de tâches")
-        n=input()
-        for i in range (n):
-            self.ajouter()
-
-
-    # Les 2 fonctions suivantes nous ont servi à tester l'affichage des Ecriture/Lecteurs de notre dictionnaire
-    def afficher(self, dico): 
-        for i in range (len(dico)):
-            for j in range (len(dico.get(i).writes)):
-                print(dico.get(i).writes[j])
-            for j in range (len(dico.get(i).reads)):
-                print(dico.get(i).reads[j])
-
-
 
     # Cette methode permet de verifier les conditions de Bernstein, elle retourne faux si une condition est violée et vrai sinon
     def compatible(self, t1,t2):
@@ -183,11 +138,15 @@ class TaskSystem:
 
         # Cette fonction permet d'afficher l'ordre des taches
     def afficheordre(self, dico):
+        if self.samename()==True:
+            exit()
         for i in range(len(dico)):
             print(dico.get(i).name)
 
         # Cette fonction permet d'executer le run de chaque tache en respectant l'ordre trouvé juste avant
-    def afficherRun(self): 
+    def afficheRun(self): 
+        if self.samename()==True:
+            exit()
         print("")
         print("Voici l'execution des tâches dans l'ordre de paralélisation maximale : ")
         for i in range (len(self.initrun(self.maxparra()))):
@@ -196,6 +155,8 @@ class TaskSystem:
     
         # afficherDependences sert à afficher les dependences de chaque tache du dictionnaire
     def afficheDependances(self):
+        if self.samename()==True:
+            exit()
         print("")
         print("Voici les dépendances de chaque tache : ")
         for i in range (len(self.list_obj)):
@@ -214,6 +175,8 @@ class TaskSystem:
     # et grâce à deux modules importés : networkx et matplotlib
 
     def draw(self):
+        if self.samename()==True:
+            exit()
         G = nx.DiGraph()
         arretes = []
         for i in range(len(self.maxparra())):
@@ -238,7 +201,7 @@ class TaskSystem:
 T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
 T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
 T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
-T4 = Task(name = "T4",writes = [5],reads = [3,4],run = None)
+T4 = Task(name = "T3",writes = [5],reads = [3,4],run = None)
 T5 = Task(name = "T5",writes = [2],reads = [4],run = None)
 T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
 T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
