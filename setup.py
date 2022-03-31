@@ -5,10 +5,10 @@ setup (             #méthode setup qui permettra l’installation de la librair
     version = '1.0' ,
     author= 'Groupe',
     author_email= 'zackboum.zb@gmail.com',
-    description = " Cette libraire en Python permet d'automatiser la parallélisation maximale de systèmes de tâches"
-    licence = 'gggg'
+    description = ' Cette libraire en Python permet dautomatiser la parallélisation maximale de systèmes de tâches'
+    licence = "gggg'
     keywords = ''
-    url = ''
+    url = "   lokik"
     packages=[                          #Packages de la librairie
               'lib_projet'
               ], 
