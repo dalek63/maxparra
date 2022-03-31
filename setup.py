@@ -1,4 +1,6 @@
+from distutils.core import setup
 from setuptools import setup 
+
 
 setup (             #méthode setup qui permettra l’installation de la librairie sur le système
     name='lib_projet' , 
