@@ -71,6 +71,8 @@ def ajouterTaches():                            # Permet d'ajouter le nombre vou
 
 # Des exemples qui nous ont permis de tester plus rapidement le programme
 
+#Exemple 1
+
 T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
 T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
 T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
@@ -80,7 +82,19 @@ T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
 T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
 T8 = Task(name = "T8",writes = [5],reads = [1,3],run =None)
 
+#Exemple 2 (commenter l'exemple 1 si l'on decommente l'exemple 2 et inversement )
 
+
+'''
+T1 = Task(name = "T1",writes = [7],reads = [1,2],run = None)
+T2 = Task(name = "T2",writes = [8],reads = [3,4],run = None)
+T3  = Task(name = "T3",writes = [9],reads = [5,6],run = None)
+T4 = Task(name = "T4",writes = [10],reads = [7,8],run = None)
+T5 = Task(name = "T5",writes = [11],reads = [7,8],run = None)
+T6 = Task(name = "T6",writes = [12],reads = [9,11],run = None)
+T7 = Task(name = "T7",writes = [13],reads = [12],run = None)
+T8 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
+'''
 
 
 # Permet de rajouter une tache après l'autre au fur et à mesur
@@ -270,6 +284,6 @@ afficherRun(initrun(maxparra))
 
 #print(aucunePrecedence(t))
 
-
+afficherRun(initrun(maxparra))
 
 draw()
