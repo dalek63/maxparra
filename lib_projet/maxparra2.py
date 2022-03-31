@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+
+    
 class Task:
     def __init__(self, name, writes, reads, run):
         self.name = name
@@ -147,7 +149,7 @@ class TaskSystem:
         ordre = {}
 
         # Ici on cherche les taches qui n'ont pas de précedences et qui s'effectuent donc en premier 
-        for i in range(len(self, dico)):
+        for i in range(len(dico)):
             if self.recherche(self.list_obj.get(i), dico)==False:
                 self.addElement(ordre, self.list_obj.get(i))
                 
@@ -185,16 +187,19 @@ class TaskSystem:
             print(dico.get(i).name)
 
         # Cette fonction permet d'executer le run de chaque tache en respectant l'ordre trouvé juste avant
-    def afficherRun(self, dico): 
-        for i in range (len(dico)):
-            dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée ")
+    def afficherRun(self): 
+        print("")
+        print("Voici l'execution des tâches dans l'ordre de paralélisation maximale : ")
+        for i in range (len(self.initrun(self.maxparra()))):
+            self.initrun(self.maxparra()).get(i).run=print("la tache "+ self.initrun(self.maxparra()).get(i).name + " a été lancée ")
 
     
-        # afficherprecedeces sert à afficher les precedences de chaque tache du dictionnaire
+        # afficherDependences sert à afficher les dependences de chaque tache du dictionnaire
     def afficheDependances(self):
-        print("Voici les dépendances de chaque tache : ")
         print("")
+        print("Voici les dépendances de chaque tache : ")
         for i in range (len(self.list_obj)):
+            print("___________________________")
             print(self.list_obj.get(i).name, " : " )
             if len(self.maxparra().get(i))==0:
                 print("Aucune dépendance")
@@ -223,7 +228,7 @@ class TaskSystem:
         plt.show()
 
 
-#*************************************************Execution du code***************************************
+#*************************************************Execution du code*****************************************************************
 
 
 # Des exemples qui nous ont permis de tester plus rapidement le programme
@@ -242,22 +247,22 @@ T8 = Task(name = "T8",writes = [5],reads = [1,3],run =None)
 #Exemple 2 (commenter l'exemple 1 si l'on decommente l'exemple 2 et inversement )
 
 
-'''
-T1 = Task(name = "T1",writes = [7],reads = [1,2],run = None)
-T2 = Task(name = "T2",writes = [8],reads = [3,4],run = None)
-T3  = Task(name = "T3",writes = [9],reads = [5,6],run = None)
-T4 = Task(name = "T4",writes = [10],reads = [7,8],run = None)
-T5 = Task(name = "T5",writes = [11],reads = [7,8],run = None)
-T6 = Task(name = "T6",writes = [12],reads = [9,11],run = None)
-T7 = Task(name = "T7",writes = [13],reads = [12],run = None)
-T8 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
-'''
+
+T10 = Task(name = "T1",writes = [7],reads = [1,2],run = None)
+T20= Task(name = "T2",writes = [8],reads = [3,4],run = None)
+T30  = Task(name = "T3",writes = [9],reads = [5,6],run = None)
+T40 = Task(name = "T4",writes = [10],reads = [7,8],run = None)
+T50 = Task(name = "T5",writes = [11],reads = [7,8],run = None)
+T60 = Task(name = "T6",writes = [12],reads = [9,11],run = None)
+T70 = Task(name = "T7",writes = [13],reads = [12],run = None)
+T80 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
+
 
 #list_obj est le dictionnaire qui contient toutes les tâches 
 
 list_obj = {}
 
-
+list_nul = {}
 # Permet de rajouter une tache après l'autre au fur et à mesur
 list_obj[len(list_obj)] = T1
 list_obj[len(list_obj)] = T2
@@ -268,23 +273,17 @@ list_obj[len(list_obj)] = T6
 list_obj[len(list_obj)] = T7
 list_obj[len(list_obj)] = T8
 
+list_nul[len(list_nul)] = T10
+list_nul[len(list_nul)] = T20
+list_nul[len(list_nul)] = T30
+list_nul[len(list_nul)] = T40
+list_nul[len(list_nul)] = T50
+list_nul[len(list_nul)] = T60
+list_nul[len(list_nul)] = T70
+list_nul[len(list_nul)] = T80
+
 
 s1= TaskSystem(list_obj)
-
 s1.afficheDependances()
-s1.draw()
-
-#afficheDependances(maxparra)
-'''
-print("")
-print("Lancement des tâches en paralélisation maximale: ")
-print("")
-afficherRun(initrun(maxparra))
-
-
-'''
-
-
-#afficheordre(initrun(maxparra))
-
-#print(aucunePrecedence(t))
+#s1.afficherRun()
+#s1.draw()
