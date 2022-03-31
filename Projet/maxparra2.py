@@ -16,6 +16,7 @@ class TaskSystem:
         self.list_obj = list_obj
 
 
+    #BONUS 1 : Fonction samename qui est lancé dans chaque fonction utile de TaskSystem pour savoir si deux tâches ont un même nom
     def samename(self):
         for i in range(len(self.list_obj)):
             for j in range(i+1,len(self.list_obj)):
@@ -36,7 +37,7 @@ class TaskSystem:
     def compatible(self, t1,t2):
         for i in range (len(t1.writes)):
                     for j in range (len(t2.reads)):
-                        if t1.writes[i]==t2.reads[j]   :
+                        if t1.writes[i]==t2.reads[j]:
                             return False
         for i in range (len(t2.writes)):
             for j in range (len(t1.reads)):
@@ -123,14 +124,6 @@ class TaskSystem:
                 self.addElement(ordre, tempdic2.get(l))
 
             tempdic=tempdic2
-            
-            '''
-            print(aucunePrecedence(tempdic))
-            print("!")
-            for l in range(len(tempdic)):
-                print(tempdic.get(l).name)
-            print("!")
-            '''
             tempdic2 = {}
 
         
@@ -173,6 +166,7 @@ class TaskSystem:
 
     #Fonction qui dessine le graphe par rapport à la liste des dépendances creer par la fonction redondances(compatibleUltime(list_obj)) 
     # et grâce à deux modules importés : networkx et matplotlib
+    #BONUS 2 
 
     def draw(self):
         if self.samename()==True:
@@ -201,7 +195,7 @@ class TaskSystem:
 T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
 T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
 T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
-T4 = Task(name = "T3",writes = [5],reads = [3,4],run = None)
+T4 = Task(name = "T4",writes = [5],reads = [3,4],run = None)
 T5 = Task(name = "T5",writes = [2],reads = [4],run = None)
 T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
 T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
@@ -221,20 +215,17 @@ T70 = Task(name = "T7",writes = [13],reads = [12],run = None)
 T80 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
 
 
-#list_obj est le dictionnaire qui contient toutes les tâches 
+#list_obj est le dictionnaire qui contient toutes les tâches, il faut que le dictionnaire aient des clés 
 
 list_obj = {}
 
 list_nul = {}
 # Permet de rajouter une tache après l'autre au fur et à mesur
-list_obj[len(list_obj)] = T1
-list_obj[len(list_obj)] = T2
-list_obj[len(list_obj)] = T3
-list_obj[len(list_obj)] = T4
-list_obj[len(list_obj)] = T5
-list_obj[len(list_obj)] = T6
-list_obj[len(list_obj)] = T7
-list_obj[len(list_obj)] = T8
+
+
+
+list_obj = {0 : T1, 1 : T2, 2 : T3, 3 : T4, 4 : T5, 5 : T6, 6 : T7 , 7 : T8}
+
 
 list_nul[len(list_nul)] = T10
 list_nul[len(list_nul)] = T20
@@ -246,7 +237,8 @@ list_nul[len(list_nul)] = T70
 list_nul[len(list_nul)] = T80
 
 
+
 s1= TaskSystem(list_obj)
 s1.afficheDependances()
-s1.afficherRun()
+s1.afficheRun()
 s1.draw()
