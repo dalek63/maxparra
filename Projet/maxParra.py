@@ -1,5 +1,10 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from re import X
+import time
+import threading
+
+
 
 class Task:
     def __init__(self, name, writes, reads, run):
@@ -28,15 +33,68 @@ def verifname(nom, liste):                                     #Verifie si une t
 
 list_obj = {}
 
+def runT1():
+    global g,a,b
+    a=2
+    b=1
+    g=a+b
+   
+    
+def runT2():
+    global h,c,d
+    c=2
+    d=1
+    h=c-d
+   
 
-T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
-T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
-T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
-T4 = Task(name = "T4",writes = [5],reads = [3,4],run = None)
-T5 = Task(name = "T5",writes = [2],reads = [4],run = None)
-T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
-T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
-T8 = Task(name = "T8",writes = [5],reads = [1,3],run =None)
+def runT3():
+    global i,e,f
+    e=1
+    f=1
+    i=e*f
+    
+    
+def runT4():
+    global j,g,h
+    j=g*h
+   
+
+def runT5():
+    global k,g,h
+    k=g/h
+   
+
+
+def runT6():
+    global l,k,i
+    l=k+i
+   
+
+
+def runT7():
+    global m,l
+    m=2*l
+    
+
+
+def runT8():
+    global n,j,m
+    n=j+m
+    print(n)
+    
+
+
+
+
+T1 = Task(name = "T1",writes = [7],reads = [1,2],run = runT1())
+T2= Task(name = "T2",writes = [8],reads = [3,4],run = runT2())
+T3  = Task(name = "T3",writes = [9],reads = [5,6],run = runT3())
+T4 = Task(name = "T4",writes = [10],reads = [7,8],run = runT4())
+T5 = Task(name = "T5",writes = [11],reads = [7,8],run = runT5())
+T6 = Task(name = "T6",writes = [12],reads = [9,11],run = runT6())
+T7 = Task(name = "T7",writes = [13],reads = [12],run = runT7())
+T8 = Task(name = "T8",writes = [14],reads = [10,13],run =runT8())
+
 
 
 # Permet de rajouter une tache après l'autre au fur et à mesur
@@ -169,15 +227,6 @@ def redondances(dico):
                
     return dico
 
-
-
-
-
-
-
-
-
-
 maxparra = redondances(compatibleUltime(list_obj))
 
   
@@ -212,13 +261,12 @@ def aucunePrecedence(dico):
     # Cette fonction donne l'ordre dans lequel les taches doivent s'éxecuter
 def initrun(dico):
     ordre = {}
-
+    tempdic = {}
     # Ici on cherche les taches qui n'ont pas de précedences et qui s'effectuent donc en premier 
     for i in range(len(dico)):
         if recherche(list_obj.get(i), dico)==False:
-            addElement(ordre, list_obj.get(i))
-            
-    tempdic = ordre
+            addElement(tempdic, list_obj.get(i))
+    addElement(ordre, tempdic)   
     tempdic2 = {}
     
     # Tant qu'au moins 1 tache qu'on étudie possède au moins 1 précedence
@@ -226,11 +274,11 @@ def initrun(dico):
         for k in range(len(tempdic)):
             for i in range (len(dico)):
                 for j in range (len(dico.get(i))):
-                    if list_obj.get(i)==tempdic.get(k)and dico.get(i).get(j) not in tempdic2.values():
-                     addElement(tempdic2, dico.get(i).get(j))
+                    if list_obj.get(i)==tempdic.get(k) and dico.get(i).get(j) not in tempdic2.values():
+                        addElement(tempdic2, dico.get(i).get(j))
            
-        for l in range(len(tempdic2)):
-            addElement(ordre, tempdic2.get(l))
+        
+        addElement(ordre, tempdic2)
 
         tempdic=tempdic2
          
@@ -249,12 +297,31 @@ def initrun(dico):
     # Cette fonction permet d'afficher l'ordre des taches
 def afficheordre(dico):
     for i in range(len(dico)):
-        print(dico.get(i).name)
+        print("**************************")
+        for j in range(len(dico.get(i))):
+            print(dico.get(i).get(j).name)
 
     # Cette fonction permet d'executer le run de chaque tache en respectant l'ordre trouvé juste avant
-def afficherRun(dico): 
-    for i in range (len(dico)):
-        dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée ")
+
+
+
+
+
+def lancement(dico):
+    k=0
+    for i in range(len(dico)):
+        for j in range(len(dico.get(i))):
+            globals()['t'+str(k)]=threading.Thread(target=dico.get(i).get(j).run)
+
+    for l in range(k):
+        for i in range(len(dico)):
+            for j in range(len(dico.get(i))):
+                globals()['t'+str(l)].start()
+                print("")
+            for j in range(len(dico.get(i))):
+                globals()['t'+str(l)].join()
+            
+
 
 
 #***************************************************Partie Graphique***********************************************************
@@ -285,13 +352,12 @@ def draw():
 
 '''
 
-T1 = Task(name = "T1",writes = [7],reads = [1,2],run = None)
-T2 = Task(name = "T2",writes = [8],reads = [3,4],run = None)
-T3  = Task(name = "T3",writes = [9],reads = [5,6],run = None)
-T4 = Task(name = "T4",writes = [10],reads = [7,8],run = None)
-T5 = Task(name = "T5",writes = [11],reads = [7,8],run = None)
-T6 = Task(name = "T6",writes = [12],reads = [9,11],run = None)
-T7 = Task(name = "T7",writes = [13],reads = [12],run = None)
-T8 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
 
-draw()
+
+
+
+lancement(initrun(maxparra))
+
+#afficheordre(initrun(maxparra))
+
+#draw()

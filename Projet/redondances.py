@@ -89,7 +89,7 @@ def compatibleUltime(dico):
     for i in range (len(dico)):
         addElement(incompatibles, compatibletotal(dico.get(i),dico))
     return incompatibles    
-
+    
 
   
 def arretes(dico):
