@@ -1,6 +1,3 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-
 class Task:
     def __init__(self, name, writes, reads, run):
         self.name = name
@@ -95,10 +92,6 @@ def compatibleUltime(dico):
 
 
   
-
-# Cette fonction permet de supprimer les redondances des taches du dictionnaire
-
-
 def arretes(dico):
     arretes = {}
     for i in range(len(dico)):
@@ -170,17 +163,10 @@ def redondances(dico):
     return dico
 
 
+#print(chemins().get(1)[len(chemins().get(1))-1].name)
 
 
-
-
-
-
-
-
-maxparra = redondances(compatibleUltime(list_obj))
-
-  
+#print(compatibleUltime(list_obj).get(getKey(list_obj,chemins().get(1)[0])))
 
   # afficherprecedeces sert à afficher les precedences de chaque tache du dictionnaire
 def afficheDependances(dico):
@@ -193,105 +179,11 @@ def afficheDependances(dico):
         for j in range (len(dico.get(i))):
                 print(dico.get(i).get(j).name)
 
-    # Cette fonction renvoie True si la tache mis en parametres une tache n'est jamais une précedence et false sinon
-def recherche(t,dico):
-    for i in range(len(dico)):
-        for j in range(len(dico)):
-                if t in dico.get(j).values():
-                    return True
-    return False
-
-    # Cette fonction applique la fonction recherche dans le dictionnaire de tache
-def aucunePrecedence(dico):
-    for i in range (len(dico)):
-        for j in range(len(list_obj)):
-            if dico.get(i)==list_obj.get(j) and len(maxparra.get(j))!=0: 
-                return False
-    return True
-
-    # Cette fonction donne l'ordre dans lequel les taches doivent s'éxecuter
-def initrun(dico):
-    ordre = {}
-
-    # Ici on cherche les taches qui n'ont pas de précedences et qui s'effectuent donc en premier 
-    for i in range(len(dico)):
-        if recherche(list_obj.get(i), dico)==False:
-            addElement(ordre, list_obj.get(i))
-            
-    tempdic = ordre
-    tempdic2 = {}
-    
-    # Tant qu'au moins 1 tache qu'on étudie possède au moins 1 précedence
-    while aucunePrecedence(tempdic)==False:
-        for k in range(len(tempdic)):
-            for i in range (len(dico)):
-                for j in range (len(dico.get(i))):
-                    if list_obj.get(i)==tempdic.get(k)and dico.get(i).get(j) not in tempdic2.values():
-                     addElement(tempdic2, dico.get(i).get(j))
-           
-        for l in range(len(tempdic2)):
-            addElement(ordre, tempdic2.get(l))
-
-        tempdic=tempdic2
-         
-        '''
-        print(aucunePrecedence(tempdic))
-        print("!")
-        for l in range(len(tempdic)):
-            print(tempdic.get(l).name)
-        print("!")
-        '''
-        tempdic2 = {}
-
-       
-    return ordre       
-
-    # Cette fonction permet d'afficher l'ordre des taches
-def afficheordre(dico):
-    for i in range(len(dico)):
-        print(dico.get(i).name)
-
-    # Cette fonction permet d'executer le run de chaque tache en respectant l'ordre trouvé juste avant
-def afficherRun(dico): 
-    for i in range (len(dico)):
-        dico.get(i).run=print("la tache "+ dico.get(i).name + " a été lancée ")
 
 
-#***************************************************Partie Graphique***********************************************************
+#afficheDependances(compatibleUltime(list_obj))
+maxparra = redondances(compatibleUltime(list_obj))
 
 
-#Fonction qui dessine le graphe par rapport à la liste des dépendances creer par la fonction redondances(compatibleUltime(list_obj)) 
-# et grâce à deux modules importés : networkx et matplotlib
+afficheDependances(maxparra)
 
-def draw():
-    G = nx.DiGraph()
-    arretes = []
-    for i in range(len(maxparra)):
-        for j in range(len(maxparra.get(i))):
-            arretes.append((list_obj.get(i).name, maxparra.get(i).get(j).name))
-
-    G.add_edges_from(arretes)
-    pos = nx.spring_layout(G)
-    nx.draw_networkx_nodes(G, pos, node_size=500)
-    nx.draw_networkx_edges(G, pos, edgelist=G.edges(), edge_color='black')
-    nx.draw_networkx_labels(G, pos)
-    plt.show()
-
-'''
-
-# Des exemples qui nous ont permis de tester plus rapidement le programme
-
-#Exemple 1
-
-'''
-
-T1 = Task(name = "T1",writes = [7],reads = [1,2],run = None)
-T2 = Task(name = "T2",writes = [8],reads = [3,4],run = None)
-T3  = Task(name = "T3",writes = [9],reads = [5,6],run = None)
-T4 = Task(name = "T4",writes = [10],reads = [7,8],run = None)
-T5 = Task(name = "T5",writes = [11],reads = [7,8],run = None)
-T6 = Task(name = "T6",writes = [12],reads = [9,11],run = None)
-T7 = Task(name = "T7",writes = [13],reads = [12],run = None)
-T8 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
-
-draw()
