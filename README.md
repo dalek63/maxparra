@@ -21,8 +21,8 @@ Le dictionnaire de tâches entré comme paramètre de TaskSystem doit posséder 
 Il faut aussi créer la fonction run de tâche. 
 
 Les fonctions qui vous seront utile sont : 
-- afficheordre() : Qui affiche l'ordre dans lequel les taches vont s'éxécuter suite à la   parralilasation   maximale.
-- execution() : Qui execute la fonction Run de chaque tache dans l'ordre parralélisme maximale.
+- afficheordre() : Qui affiche l'ordre dans lequel les taches vont s'éxécuter suite à la   paralélisation   maximale.
+- execution() : Qui execute la fonction Run de chaque tache sous forme de thread dans l'ordre de parralélisme maximale.
 - afficherDependences() : Qui affiche les dependances de chaque taches.
 - draw() : Qui dessine le graphe du systeme de taches parralélisées au maximum. 
 
