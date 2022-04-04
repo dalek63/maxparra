@@ -26,5 +26,3 @@ Les fonctions qui vous seront utile sont :
 - afficherDependences() : Qui affiche les dependances de chaque taches.
 - draw() : Qui dessine le graphe du systeme de taches parralélisées au maximum. 
 
-Le fichier setup.py sert à installer la librairie dans nimporte quel systeme, étant donnée qu'on voulait creer une vraie librarie qu'on postera sur github, ce fichier est essentiel pour cela.
-
