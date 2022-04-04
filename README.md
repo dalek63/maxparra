@@ -12,24 +12,17 @@ Pour pouvoir afficher le graphes dy systeme de taches parralélisé au maximum, 
 
 ## Note 
 
+Le lancement de fonction peut parfois prendre du temps, veuillez bien attendre qu'elle se termine.
+
 Le dictionnaire de tâches entré comme paramètre de TaskSystem doit posséder der clés de type int et croissantes comme par exemple : 
 
 - list_obj = {0 : T1, 1 : T2, 2 : T3, 3 : T4, 4 : T5, 5 : T6, 6 : T7 , 7 : T8}
 
-OU
-
-- list_obj[len(list_obj)] = T1
-- list_obj[len(list_obj)] = T2
-- list_obj[len(list_obj)] = T3
-- list_obj[len(list_obj)] = T4
-- list_obj[len(list_obj)] = T5
-- list_obj[len(list_obj)] = T6
-- list_obj[len(list_obj)] = T7
-- list_obj[len(list_obj)] = T8
+Il faut aussi créer la fonction run de tâche. 
 
 Les fonctions qui vous seront utile sont : 
-- AfficherOrdre() : Qui affiche l'ordre dans lequel les taches vont s'éxécuter suite à la   parralilasation   maximale.
-- AfficherRun() : Qui execute la fonction Run de chaque tache dans l'ordre parralélisme maximale.
+- afficheordre() : Qui affiche l'ordre dans lequel les taches vont s'éxécuter suite à la   parralilasation   maximale.
+- execution() : Qui execute la fonction Run de chaque tache dans l'ordre parralélisme maximale.
 - afficherDependences() : Qui affiche les dependances de chaque taches.
 - draw() : Qui dessine le graphe du systeme de taches parralélisées au maximum. 
 

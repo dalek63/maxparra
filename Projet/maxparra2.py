@@ -1,8 +1,10 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from re import X
+import time
+import threading
 
-
-    
+#Création de la classe Task    
 class Task:
     def __init__(self, name, writes, reads, run):
         self.name = name
@@ -10,7 +12,7 @@ class Task:
         self.reads = reads
         self.run = None
 
-
+#Création de la classe Task System ( le système de tache )
 class TaskSystem:
     def __init__(self, list_obj):
         self.list_obj = list_obj
@@ -66,25 +68,60 @@ class TaskSystem:
         return incompatibles    
 
 
+    #Fonction retournant un dicionnaires de toutes les liaisons (ou arretes) du graphe
 
+    def arretes(self,dico):
+        arretes = {}
+        for i in range(len(dico)):
+            for j in range(len(dico.get(i))):
+                self.addElement(arretes, [self.list_obj.get(i),dico.get(i).get(j)])
+        return arretes        
 
-    # Cette fonction permet de supprimer les redondances des taches du dictionnaire
+    #Fonction créent un nouveau chemin ( nécessaire pour la fonction chemins() )
+
+    def newChemin(self, chemin, val):
+        newChemin = []
+        for i in range(len(chemin)):
+            newChemin.append(chemin[i])
+            if chemin[i]==val:
+                return newChemin
+
+    #Fonction réalisant un dictionnaire de tout les chemins existant sous forme de tableaux
+
+    def chemins(self):
+        chemins = self.arretes(self.compatibleUltime(self.list_obj))
+        copieArretes = self.arretes(self.compatibleUltime(self.list_obj)) 
+        for i in range(len(chemins)):
+            for j in range(len(copieArretes)):
+                if chemins.get(i)[len(chemins.get(i))-1]==copieArretes.get(j)[0]:
+                    chemins.get(i).append(copieArretes.get(j)[1])
+                if copieArretes.get(j)[0] in chemins.get(i) and chemins.get(i)[chemins.get(i).index(copieArretes.get(j)[0])+1]!=copieArretes.get(j)[1] and self.newChemin(chemins.get(i), copieArretes.get(j)[0])+[copieArretes.get(j)[1]] not in chemins.values():
+                    self.addElement(chemins, self.newChemin(chemins.get(i), copieArretes.get(j)[0])+[copieArretes.get(j)[1]])
+        
+        return chemins
+
+    #Fonction retirant les dépendances créant une redondance pour une tâche 
 
     def redondances(self, dico):
-        for i in range (len(dico)):
-            for j in range(len(dico.get(i))):
-                for k in range(i+1,len(dico)):
-                    for l in range (len(dico.get(k))):
-                        if dico.get(i).get(j)==dico.get(k).get(l) and (self.list_obj.get(k)) in dico.get(i).values():
-                            dico.get(i).pop(self.getKey(dico.get(i),dico.get(k).get(l)))
+        for i in range(len(self.chemins())):
+            for j in range(i+1,len(self.chemins())):
+                if self.chemins().get(i)[0]==self.chemins().get(j)[0] and self.chemins().get(i)[len(self.chemins().get(i))-1]==self.chemins().get(j)[len(self.chemins().get(j))-1]:
+                    
+                    if len(self.chemins().get(i))!=len(self.chemins().get(j)) and self.chemins().get(i)[len(self.chemins().get(i))-1] in dico.get(self.getKey(self.list_obj,self.chemins().get(i)[0])).values():
+                    
+                        dico.get(self.getKey(self.list_obj,self.chemins().get(i)[0] )).pop(self.getKey(dico.get(self.getKey(self.list_obj,self.chemins().get(i)[0] )),self.chemins().get(i)[len(self.chemins().get(i))-1]))
+                
         return dico
 
+
+    #Fonction de simplification 
     def maxparra(self):
         return self.redondances(self.compatibleUltime(self.list_obj))
 
-    #afficheprecedences(maxparra)   
+     
 
-        # Cette fonction renvoie True si la tache mis en parametres une tache n'est jamais une précedence et false sinon
+    # Cette fonction renvoie True si la tache mis en parametres une tache n'est jamais une dépendance et false sinon
+
     def recherche(self, t,dico):
         for i in range(len(dico)):
             for j in range(len(dico)):
@@ -92,7 +129,8 @@ class TaskSystem:
                         return True
         return False
 
-        # Cette fonction applique la fonction recherche dans le dictionnaire de tache
+    # Cette fonction applique la fonction recherche dans le dictionnaire de tache
+
     def aucunePrecedence(self, dico):
         for i in range (len(dico)):
             for j in range(len(self.list_obj)):
@@ -100,19 +138,21 @@ class TaskSystem:
                     return False
         return True
 
-        # Cette fonction donne l'ordre dans lequel les taches doivent s'éxecuter
+    # Cette fonction donne l'ordre dans lequel les taches doivent s'éxecuter et celles qui doivent s'executer en parallele
+
     def initrun(self, dico):
         ordre = {}
+        tempdic = {}
 
-        # Ici on cherche les taches qui n'ont pas de précedences et qui s'effectuent donc en premier 
+        # Ici on cherche les taches qui n'ont pas de dépendances et qui s'effectuent donc en premier 
         for i in range(len(dico)):
             if self.recherche(self.list_obj.get(i), dico)==False:
-                self.addElement(ordre, self.list_obj.get(i))
+                self.addElement(tempdic, self.list_obj.get(i))
                 
-        tempdic = ordre
+        self.addElement(ordre, tempdic)
         tempdic2 = {}
         
-        # Tant qu'au moins 1 tache qu'on étudie possède au moins 1 précedence
+        # Tant qu'au moins 1 tache qu'on étudie possède au moins 1 Dépendance
         while self.aucunePrecedence(tempdic)==False:
             for k in range(len(tempdic)):
                 for i in range (len(dico)):
@@ -120,40 +160,49 @@ class TaskSystem:
                         if self.list_obj.get(i)==tempdic.get(k)and dico.get(i).get(j) not in tempdic2.values():
                             self.addElement(tempdic2, dico.get(i).get(j))
             
-            for l in range(len(tempdic2)):
-                self.addElement(ordre, tempdic2.get(l))
-
+            
+            self.addElement(ordre, tempdic2)
+ 
             tempdic=tempdic2
             tempdic2 = {}
 
         
         return ordre       
 
-        # Cette fonction permet d'afficher l'ordre des taches
-    def afficheordre(self, dico):
-        if self.samename()==True:
-            exit()
-        for i in range(len(dico)):
-            print(dico.get(i).name)
+    # Cette fonction permet d'afficher les tâches dans leur ordre d'execution en paralélisme maximal et montre les tâches qui sont parallèles entre elles
 
-        # Cette fonction permet d'executer le run de chaque tache en respectant l'ordre trouvé juste avant
-    def afficheRun(self): 
-        if self.samename()==True:
-            exit()
-        print("")
-        print("Voici l'execution des tâches dans l'ordre de paralélisation maximale : ")
-        for i in range (len(self.initrun(self.maxparra()))):
-            self.initrun(self.maxparra()).get(i).run=print("la tache "+ self.initrun(self.maxparra()).get(i).name + " a été lancée ")
+    def afficheordre(self):
+        for i in range(len(self.initrun(self.maxparra()))):
+            print("**************************")
+            for j in range(len(self.initrun(self.maxparra()).get(i))):
+                print(self.initrun(self.maxparra()).get(i).get(j).name)
+        
 
-    
-        # afficherDependences sert à afficher les dependences de chaque tache du dictionnaire
+    #Cette fonction sert à éxécuter chaque thread de tâche de manière à ce qu'elles soient exécuter dans l'ordre de paralélisme maximale 
+
+    def execution(self):
+        k=0
+        for i in range(len(self.initrun(self.maxparra()))):
+            for j in range(len(self.initrun(self.maxparra()).get(i))):
+                globals()['t'+str(k)]=threading.Thread(target=self.initrun(self.maxparra()).get(i).get(j).run)
+
+        for l in range(k):
+            for i in range(len(self.initrun(self.maxparra()))):
+                for j in range(len(self.initrun(self.maxparra()).get(i))):
+                    globals()['t'+str(l)].start()
+                    print("")
+                for j in range(len(self.initrun(self.maxparra()).get(i))):
+                    globals()['t'+str(l)].join()
+        
+    # afficherDependences sert à afficher les dependences de chaque tache du dictionnaire
+
     def afficheDependances(self):
         if self.samename()==True:
             exit()
         print("")
         print("Voici les dépendances de chaque tache : ")
         for i in range (len(self.list_obj)):
-            print("___________________________")
+            print("******************************")
             print(self.list_obj.get(i).name, " : " )
             if len(self.maxparra().get(i))==0:
                 print("Aucune dépendance")
@@ -186,59 +235,80 @@ class TaskSystem:
 
 
 #*************************************************Execution du code*****************************************************************
+#Exemple 
 
 
+#Fonctions de chaque tâche 
+
+def runT1():
+    global m1,m2,m3
+    m1=1
+    m2=1
+    m3=m1+m2
+   
+    
+def runT2():
+    global m1,m4
+    m4=m1*3
+    
+
+def runT3():
+    global m1,m3,m4
+    m1 = m3+m4
+   
+    
+def runT4():
+    global m3,m4,m5
+    m5=m3+m4
+   
+
+def runT5():
+    global m4,m2
+    m2=2*m4
+  
+
+
+def runT6():
+    global m5
+    m5=2*m5
+  
+    
+
+def runT7():
+    global m1,m2,m4
+    m4 = m1*m2
+   
+
+
+def runT8():
+    global m5,m1,m2
+    m5=m1+m3
+    print(m5)
+    
 # Des exemples qui nous ont permis de tester plus rapidement le programme
 
 #Exemple 1
 
-T1 = Task(name = "T1",writes = [3],reads = [1,2],run = None)
-T2 = Task(name = "T2",writes = [4],reads = [1],run = None)
-T3  = Task(name = "T3",writes = [1],reads = [3,4],run = None)
-T4 = Task(name = "T4",writes = [5],reads = [3,4],run = None)
-T5 = Task(name = "T5",writes = [2],reads = [4],run = None)
-T6 = Task(name = "T6",writes = [5],reads = [5],run = None)
-T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = None)
-T8 = Task(name = "T8",writes = [5],reads = [1,3],run =None)
-
-#Exemple 2 (commenter l'exemple 1 si l'on decommente l'exemple 2 et inversement )
-
-
-
-T10 = Task(name = "T1",writes = [7],reads = [1,2],run = None)
-T20= Task(name = "T2",writes = [8],reads = [3,4],run = None)
-T30  = Task(name = "T3",writes = [9],reads = [5,6],run = None)
-T40 = Task(name = "T4",writes = [10],reads = [7,8],run = None)
-T50 = Task(name = "T5",writes = [11],reads = [7,8],run = None)
-T60 = Task(name = "T6",writes = [12],reads = [9,11],run = None)
-T70 = Task(name = "T7",writes = [13],reads = [12],run = None)
-T80 = Task(name = "T8",writes = [14],reads = [10,13],run =None)
-
+T1 = Task(name = "T1",writes = [3],reads = [1,2],run = runT1())
+T2 = Task(name = "T2",writes = [4],reads = [1],run = runT2())
+T3  = Task(name = "T3",writes = [1],reads = [3,4],run = runT3())
+T4 = Task(name = "T4",writes = [5],reads = [3,4],run = runT4())
+T5 = Task(name = "T5",writes = [2],reads = [4],run = runT5())
+T6 = Task(name = "T6",writes = [5],reads = [5],run = runT6())
+T7 = Task(name = "T7",writes = [4],reads = [4,1,2],run = runT7())
+T8 = Task(name = "T8",writes = [5],reads = [1,3],run =runT8())
 
 #list_obj est le dictionnaire qui contient toutes les tâches, il faut que le dictionnaire aient des clés 
 
 list_obj = {}
 
-list_nul = {}
-# Permet de rajouter une tache après l'autre au fur et à mesur
-
-
 
 list_obj = {0 : T1, 1 : T2, 2 : T3, 3 : T4, 4 : T5, 5 : T6, 6 : T7 , 7 : T8}
-
-
-list_nul[len(list_nul)] = T10
-list_nul[len(list_nul)] = T20
-list_nul[len(list_nul)] = T30
-list_nul[len(list_nul)] = T40
-list_nul[len(list_nul)] = T50
-list_nul[len(list_nul)] = T60
-list_nul[len(list_nul)] = T70
-list_nul[len(list_nul)] = T80
 
 
 
 s1= TaskSystem(list_obj)
 s1.afficheDependances()
-s1.afficheRun()
+s1.afficheordre()
+s1.execution()
 s1.draw()
